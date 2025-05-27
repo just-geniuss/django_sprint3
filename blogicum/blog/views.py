@@ -6,14 +6,16 @@ from .models import Post, Category
 def index(request):
     """Главная страница с лентой записей."""
     now = timezone.now()
-    
+
     # Получаем 5 последних опубликованных постов
     post_list = Post.objects.filter(
         is_published=True,
         category__is_published=True,
         pub_date__lte=now
-    ).select_related('category', 'location', 'author').order_by('-pub_date')[:5]
-    
+    ).select_related(
+        'category', 'location', 'author'
+    ).order_by('-pub_date')[:5]
+
     context = {'post_list': post_list}
     return render(request, 'blog/index.html', context)
 
@@ -21,7 +23,7 @@ def index(request):
 def post_detail(request, id):
     """Детальная страница поста."""
     now = timezone.now()
-    
+
     post = get_object_or_404(
         Post.objects.select_related('category', 'location', 'author'),
         pk=id,
@@ -29,7 +31,7 @@ def post_detail(request, id):
         category__is_published=True,
         pub_date__lte=now
     )
-    
+
     context = {'post': post}
     return render(request, 'blog/detail.html', context)
 
@@ -41,15 +43,17 @@ def category_posts(request, category_slug):
         slug=category_slug,
         is_published=True
     )
-    
+
     now = timezone.now()
-    
+
     post_list = Post.objects.filter(
         category=category,
         is_published=True,
         pub_date__lte=now
-    ).select_related('category', 'location', 'author').order_by('-pub_date')
-    
+    ).select_related(
+        'category', 'location', 'author'
+    ).order_by('-pub_date')
+
     context = {
         'category': category,
         'post_list': post_list

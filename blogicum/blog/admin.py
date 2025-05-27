@@ -11,7 +11,7 @@ class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
 
 
-@admin.register(Location)  
+@admin.register(Location)
 class LocationAdmin(admin.ModelAdmin):
     list_display = ('name', 'is_published', 'created_at')
     list_editable = ('is_published',)
@@ -21,8 +21,10 @@ class LocationAdmin(admin.ModelAdmin):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'category', 'location', 'is_published', 'created_at')
+    list_display = ('title', 'author', 'category', 'location',
+                    'is_published', 'created_at')
     list_editable = ('is_published', 'category', 'location')
     search_fields = ('title', 'text')
-    list_filter = ('is_published', 'category', 'location', 'author', 'created_at')
+    list_filter = ('is_published', 'category', 'location', 'author',
+                   'created_at')
     date_hierarchy = 'pub_date'
